@@ -1,0 +1,5 @@
+<launch>
+    <node name="kalman_filter" pkg="kl_kalman" type="kalman_filter_node" output="screen" required="true">
+        <rosparam command="load" file="$(find kl_kalman)/param/test.yaml" /> 
+    </node>
+</launch>
