@@ -2,7 +2,7 @@
  * \file
  * \brief Utilites for parsing Matrix messages from XmlRpc
  * \author Andrey Stepanov
- * \version 1.0.1
+ * \version 2.0.0
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,21 +21,23 @@
 
 namespace kl_kalman {
 
-void XmlRpcToMatrixMsg(XmlRpc::XmlRpcValue x, Matrix& m) {
+Matrix XmlRpcToMatrixMsg(XmlRpc::XmlRpcValue x) {
+	Matrix m;
 	m.rows = (int)x["rows"];
 	m.cols = (int)x["cols"];
 	m.data.clear();
 	XmlRpc::XmlRpcValue x_data = x["data"];
-	for (int i = 0; i < x_data.size(); i++) {
+	for (int i = 0; i < x_data.size(); i++)
 		m.data.push_back((double)x_data[i]);
-	}
+	return m;
 }
 
-void MatrixMsgToEigen(const Matrix& m, matrix_type& e) {
-	e.resize(m.rows, m.cols);
+matrix_type MatrixMsgToEigen(const Matrix& m) {
+	matrix_type e(m.rows, m.cols);
 	for (dimension r = 0; r < m.rows; r++)
 		for (dimension c = 0; c < m.cols; c++)
 			e(r,c) = m.data[r * m.cols + c];
+	return e;
 }
 
 }
