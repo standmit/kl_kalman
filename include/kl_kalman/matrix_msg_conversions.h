@@ -2,7 +2,7 @@
  * \file
  * \brief Utilites for parsing Matrix messages from XmlRpc
  * \author Andrey Stepanov
- * \version 1.0
+ * \version 1.1.0
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 
 #include <xmlrpcpp/XmlRpcValue.h>
 #include "kl_kalman/Matrix.h"
-#include <eigen3/Eigen/Core>
+#include "kl_kalman/types.h"
 #include <ros/console.h>
 
 namespace kl_kalman {
@@ -39,7 +39,7 @@ void XmlRpcToMatrixMsg(XmlRpc::XmlRpcValue x, Matrix& m);
  * \param[in] m		Input Matrix message
  * \param[out] e	Output Eigen matrix
  */
-void MatrixMsgToEigen(const Matrix& m, Eigen::MatrixXd& e);
+void MatrixMsgToEigen(const Matrix& m, matrix_type& e);
 
 }
 

@@ -2,7 +2,7 @@
  * \file
  * \brief ROS wrapper for Kalman Filter
  * \author Andrey Stepanov
- * \version 0.1
+ * \version 0.1.1
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ void KalmanFilterROS::init() {
 	loadEigen("P", P);
 }
 
-bool KalmanFilterROS::loadEigen(const std::string& param_name, Eigen::MatrixXd& e) {
+bool KalmanFilterROS::loadEigen(const std::string& param_name, matrix_type& e) {
 	XmlRpc::XmlRpcValue matrix_xml;
 	if (nh.getParam(param_name, matrix_xml)) {
 		kl_kalman::Matrix matrix_msg;

@@ -2,7 +2,7 @@
  * \file
  * \brief Utilites for parsing Matrix messages from XmlRpc
  * \author Andrey Stepanov
- * \version 1.0
+ * \version 1.0.1
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,10 @@ void XmlRpcToMatrixMsg(XmlRpc::XmlRpcValue x, Matrix& m) {
 	}
 }
 
-void MatrixMsgToEigen(const Matrix& m, Eigen::MatrixXd& e) {
+void MatrixMsgToEigen(const Matrix& m, matrix_type& e) {
 	e.resize(m.rows, m.cols);
-	for (unsigned char r = 0; r < m.rows; r++)
-		for (unsigned char c = 0; c < m.cols; c++)
+	for (dimension r = 0; r < m.rows; r++)
+		for (dimension c = 0; c < m.cols; c++)
 			e(r,c) = m.data[r * m.cols + c];
 }
 

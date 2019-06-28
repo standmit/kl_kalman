@@ -2,7 +2,7 @@
  * \file
  * \brief ROS wrapper for Kalman Filter
  * \author Andrey Stepanov
- * \version 0.1
+ * \version 0.1.1
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ class KalmanFilterROS: public KalmanFilter {
 		 * \param[in] param_name	Name of parameter
 		 * \param[out] e			Eigen matrix
 		 */
-		bool loadEigen(const std::string& param_name, Eigen::MatrixXd& e);
+		bool loadEigen(const std::string& param_name, matrix_type& e);
 
 	public:
 		/**

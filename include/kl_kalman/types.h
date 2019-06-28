@@ -1,8 +1,8 @@
 /**
  * \file
- * \brief Kalman Filter
+ * \brief Common types of kl_kalman package
  * \author Andrey Stepanov
- * \version 0.1.1
+ * \version 1.0.0
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,17 @@
  * limitations under the License.
  */
 
-#include "kl_kalman/kalman_filter.h"
+#ifndef KL_KALMAN_TYPES_H_
+#define KL_KALMAN_TYPES_H_
+
+#include <eigen3/Eigen/Core>
 
 namespace kl_kalman {
 
-KalmanFilter::KalmanFilter():
-		X(),
-		P()
-{
-	X.setZero();
-	P.setZero();
-}
+typedef unsigned char dimension; ///< Dimensions count type
 
-void KalmanFilter::setState(const matrix_type& state, const matrix_type& covariance) {
-	X = state;
-	P = covariance;
-}
-
-void KalmanFilter::getState(matrix_type& state, matrix_type& covariance) const {
-	state = X;
-	covariance = P;
-}
+typedef Eigen::MatrixXd matrix_type; ///< Common type of matrix
 
 }
+
+#endif

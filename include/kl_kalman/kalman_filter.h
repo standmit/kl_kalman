@@ -2,7 +2,7 @@
  * \file
  * \brief Kalman Filter
  * \author Andrey Stepanov
- * \version 0.1
+ * \version 0.1.1
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 #ifndef KL_KALMAN_KALMAN_FILTER_H_
 #define KL_KALMAN_KALMAN_FILTER_H_
 
-#include <eigen3/Eigen/Core>
+#include "kl_kalman/types.h"
 #include <vector>
 
 /**
@@ -28,14 +28,11 @@
  */
 namespace kl_kalman {
 
-typedef unsigned char dimension; ///< Dimensions count type
-
-
 /// Kalman Filter base class
 class KalmanFilter {
 	protected:
-		Eigen::MatrixXd X; ///< Object's state vector
-		Eigen::MatrixXd P; ///< Matrix of object's state covariance
+		matrix_type X; ///< Object's state vector
+		matrix_type P; ///< Matrix of object's state covariance
 
 	public:
 		/**
@@ -50,12 +47,12 @@ class KalmanFilter {
 		 * \param state			State of the object
 		 * \param covariance	Covariance of object's state
 		 */
-		void setState(const Eigen::MatrixXd& state, const Eigen::MatrixXd& covariance);
+		void setState(const matrix_type& state, const matrix_type& covariance);
 
 		/**
 		 * \brief	Get current state of system
 		 */
-		void getState(Eigen::MatrixXd& state, Eigen::MatrixXd& covariance) const;
+		void getState(matrix_type& state, matrix_type& covariance) const;
 };
 
 
