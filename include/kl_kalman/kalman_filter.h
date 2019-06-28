@@ -2,7 +2,7 @@
  * \file
  * \brief Kalman Filter
  * \author Andrey Stepanov
- * \version 0.1.1
+ * \version 0.1.2
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,10 +30,6 @@ namespace kl_kalman {
 
 /// Kalman Filter base class
 class KalmanFilter {
-	protected:
-		matrix_type X; ///< Object's state vector
-		matrix_type P; ///< Matrix of object's state covariance
-
 	public:
 		/**
 		 * \brief		Empty constructor
@@ -53,6 +49,10 @@ class KalmanFilter {
 		 * \brief	Get current state of system
 		 */
 		void getState(matrix_type& state, matrix_type& covariance) const;
+
+	protected:
+		matrix_type X; ///< Object's state vector
+		matrix_type P; ///< Matrix of object's state covariance
 };
 
 

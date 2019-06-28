@@ -2,7 +2,7 @@
  * \file
  * \brief ROS wrapper for Kalman Filter
  * \author Andrey Stepanov
- * \version 0.1.1
+ * \version 0.1.2
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,16 +30,6 @@ namespace kl_kalman {
  * \brief Kalman Filter with ROS API
  */
 class KalmanFilterROS: public KalmanFilter {
-	protected:
-		const ros::NodeHandle nh; ///< NodeHandle for receiving parameters and publish/subscribe
-
-		/**
-		 * \brief 					Load Matrix from ParameterServer
-		 * \param[in] param_name	Name of parameter
-		 * \param[out] e			Eigen matrix
-		 */
-		bool loadEigen(const std::string& param_name, matrix_type& e);
-
 	public:
 		/**
 		 * \brief Constructor with standard namespace 'kalman_filter'
@@ -62,6 +52,16 @@ class KalmanFilterROS: public KalmanFilter {
 		 * \brief	Initialise KalmanFilter from parameters. Call it after ros::init
 		 */
 		void init();
+
+	protected:
+		const ros::NodeHandle nh; ///< NodeHandle for receiving parameters and publish/subscribe
+
+		/**
+		 * \brief 					Load Matrix from ParameterServer
+		 * \param[in] param_name	Name of parameter
+		 * \param[out] e			Eigen matrix
+		 */
+		bool loadEigen(const std::string& param_name, matrix_type& e);
 };
 
 }
