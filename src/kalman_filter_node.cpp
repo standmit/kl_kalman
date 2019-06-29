@@ -2,7 +2,7 @@
  * \file
  * \brief Kalman Filter ROS node
  * \author Andrey Stepanov
- * \version 0.1.1
+ * \version 0.2.0
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,22 +25,11 @@
 int main(int argc, char **argv) {
 	ros::init(argc, argv, "kalman_filter");
 	ros::NodeHandle nh("~");
-	XmlRpc::XmlRpcValue matrix;
-	kl_kalman::KalmanFilterROS kalman_filter("kalman_filter");
 
+	kl_kalman::KalmanFilterROS kalman_filter;
 	kalman_filter.init();
-	kl_kalman::matrix_type state;
-	kl_kalman::matrix_type covariance;
-	kalman_filter.getState(state, covariance);
-	ROS_INFO_STREAM("State" << std::endl << state << std::endl << "Covariance" << std::endl << covariance);
 
-	state(2,0) = 5.;
-	covariance(2,2) = 100.;
-	kalman_filter.setState(state, covariance);
-	kl_kalman::matrix_type new_state;
-	kl_kalman::matrix_type new_covariance;
-	kalman_filter.getState(new_state, new_covariance);
-	ROS_INFO_STREAM("State" << std::endl << new_state << std::endl << "Covariance" << std::endl << new_covariance);
+	ROS_INFO_STREAM(" Matrix F" << std::endl << kalman_filter.getF(2.));
 
 	return 0;
 }

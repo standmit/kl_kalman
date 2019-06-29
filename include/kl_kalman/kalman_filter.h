@@ -2,7 +2,7 @@
  * \file
  * \brief Kalman Filter
  * \author Andrey Stepanov
- * \version 0.1.2
+ * \version 0.2.0
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,9 +50,41 @@ class KalmanFilter {
 		 */
 		void getState(matrix_type& state, matrix_type& covariance) const;
 
+		/**
+		 * \brief	Clear F matrix
+		 * \details
+		 * Delete all components of F matrx, so F matrix will be zero \n
+		 * \f$ F = \begin{pmatrix} 0 & 0 & ... & 0 \\ 0 & 0 & ... & 0 \\ ... & ... & ... & ... \\ 0 & 0 & ... & 0 \end{pmatrix} \f$
+		 */
+		void clearF();
+
+		/**
+		 * \brief	Add component of F matrix and its power
+		 * \details
+		 * \f$ \sum_{i} {T_i (dt)^i} + T (dt)^{power} \f$
+		 */
+		void addFcomp(const matrix_type& T, const power_type power);
+
+		/**
+		 * \brief	Build F matrix
+		 * \details
+		 * F matrix will be built from components in Fcomp list
+		 * \f$F = \sum \limits_{i} T_i (dt)^i\f$
+		 */
+		matrix_type getF(const double dt) const;
+
 	protected:
 		matrix_type X; ///< Object's state vector
+
 		matrix_type P; ///< Matrix of object's state covariance
+
+	private:
+		/**
+		 * \brief	Components of F matrix
+		 * \details
+		 * See getF for details
+		 */
+		composite_matrix Fcomp;
 };
 
 

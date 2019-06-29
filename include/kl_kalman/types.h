@@ -21,12 +21,31 @@
 #define KL_KALMAN_TYPES_H_
 
 #include <eigen3/Eigen/Core>
+#include <vector>
 
 namespace kl_kalman {
 
 typedef unsigned char dimension; ///< Dimensions count type
 
 typedef Eigen::MatrixXd matrix_type; ///< Common type of matrix
+
+typedef short int power_type; ///< Power of number
+
+/**
+ * \brief       Component of matrix with power
+ * \details
+ * Contains matrix and a power of <em>dt</em>: \n
+ * \f$ [M, n] \Rightarrow M (dt)^n \f$
+ */
+typedef std::pair<matrix_type, power_type> matrix_component;
+
+/**
+ * \brief		List of components of composite matrix
+ * \details
+ * Contains list of elements ::matrix_component \n
+ * \f$ [M_0, 0], [M_1, 1], ..., [M_n, n] \Rightarrow \sum \limits_{i=0}^{n} M_i (dt)^i \f$
+ */
+typedef std::vector<matrix_component> composite_matrix;
 
 }
 

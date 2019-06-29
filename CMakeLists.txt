@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 project(kl_kalman)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -181,8 +181,14 @@ target_link_libraries(kalman_filter_node matrix_msg_conversions kalman_filter_ro
 find_package(Doxygen)
 
 if (DOXYGEN_FOUND)
-	add_custom_target(documentation ALL ${DOXYGEN_EXECUTABLE} kl_kalman.Doxyfile WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} COMMENT "Generating documentation...")
-	#add_custom_target(documentation ALL ${DOXYGEN_EXECUTABLE} ${PROJECT_SOURCE_DIR}/kl_kalman.Doxyfile WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} COMMENT "Generating documentation...")
+	add_custom_target(
+		${PROJECT_NAME}_documentation
+		ALL
+		${DOXYGEN_EXECUTABLE}
+		kl_kalman.Doxyfile
+		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+		COMMENT "Generating ${PROJECT_NAME} documentation..."
+	)
 endif() 
 
 #############

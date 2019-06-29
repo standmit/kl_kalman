@@ -2,7 +2,7 @@
  * \file
  * \brief Kalman Filter
  * \author Andrey Stepanov
- * \version 0.1.1
+ * \version 0.2.0
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,8 @@ namespace kl_kalman {
 
 KalmanFilter::KalmanFilter():
 		X(),
-		P()
+		P(),
+		Fcomp()
 {
 	X.setZero();
 	P.setZero();
@@ -37,6 +38,22 @@ void KalmanFilter::setState(const matrix_type& state, const matrix_type& covaria
 void KalmanFilter::getState(matrix_type& state, matrix_type& covariance) const {
 	state = X;
 	covariance = P;
+}
+
+matrix_type KalmanFilter::getF(const double dt) const {
+	matrix_type F(P.rows(), P.cols());
+	F.setZero();
+	for (composite_matrix::const_iterator comp = Fcomp.begin(); comp != Fcomp.end(); comp++)
+		F += comp->first * pow(dt, comp->second);
+	return F;
+}
+
+void KalmanFilter::clearF() {
+	Fcomp.clear();
+}
+
+void KalmanFilter::addFcomp(const matrix_type& T, const power_type power) {
+	Fcomp.emplace_back(T, power);
 }
 
 }
