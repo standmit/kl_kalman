@@ -2,7 +2,7 @@
  * \file
  * \brief Kalman Filter
  * \author Andrey Stepanov
- * \version 0.2.0
+ * \version 0.2.1
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
 #include <vector>
 
 /**
- * \details		All stuff refered to Kalman Filter described in this namespace
+ * \brief		All stuff refered to Kalman Filter described in this namespace
  */
 namespace kl_kalman {
 
@@ -82,7 +82,7 @@ class KalmanFilter {
 		/**
 		 * \brief	Components of F matrix
 		 * \details
-		 * See getF for details
+		 * See getF() for details
 		 */
 		composite_matrix Fcomp;
 };

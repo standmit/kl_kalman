@@ -185,7 +185,7 @@ if (DOXYGEN_FOUND)
 		${PROJECT_NAME}_documentation
 		ALL
 		${DOXYGEN_EXECUTABLE}
-		kl_kalman.Doxyfile
+		doxygen/kl_kalman.Doxyfile
 		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 		COMMENT "Generating ${PROJECT_NAME} documentation..."
 	)

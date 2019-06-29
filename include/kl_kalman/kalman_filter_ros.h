@@ -2,7 +2,7 @@
  * \file
  * \brief ROS wrapper for Kalman Filter
  * \author Andrey Stepanov
- * \version 0.2.0
+ * \version 0.2.1
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,15 +59,15 @@ class KalmanFilterROS: public KalmanFilter {
 		/**
 		 * \brief 					Load Matrix from ParameterServer
 		 * \param[in] param_name	Name of parameter
-		 * \param[out] e			Eigen matrix
+		 * \param[out] e			\link matrix_type Eigen matrix \endlink
 		 * \return					True if parameter was found
 		 */
 		bool loadEigen(const std::string& param_name, matrix_type& e) const;
 
 		/**
-		 * \brief		Parse matrix from XmlRpc element
-		 * \param x		XmlRpc element
-		 * \return		Eigen matrix
+		 * \brief		Parse matrix from \link XmlRpc::XmlRpcValue XmlRpcValue \endlink element
+		 * \param x		\link XmlRpc::XmlRpcValue XmlRpcValue \endlink element
+		 * \return		\link matrix_type Eigen matrix \endlink
 		 */
 		static matrix_type loadEigen(const XmlRpc::XmlRpcValue& x);
 };

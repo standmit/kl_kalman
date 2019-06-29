@@ -2,7 +2,7 @@
  * \file
  * \brief Utilites for parsing Matrix messages from XmlRpc
  * \author Andrey Stepanov
- * \version 2.0.0
+ * \version 2.0.1
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,16 +27,16 @@
 namespace kl_kalman {
 
 /**
- * \brief		Convert XmlRpcValue to kl_kalman::Matrix message
- * \param x		Input XmlRpcValue
+ * \brief		Convert \link XmlRpc::XmlRpcValue XmlRpcValue \endlink to kl_kalman::Matrix message
+ * \param x		Input \link XmlRpc::XmlRpcValue XmlRpcValue \endlink
  * \return		Matrix message
  */
 Matrix XmlRpcToMatrixMsg(XmlRpc::XmlRpcValue x);
 
 /**
- * \brief		Convert kl_kalman::Matrix message to Eigen matrix
+ * \brief		Convert kl_kalman::Matrix message to \link matrix_type Eigen matrix \endlink
  * \param m		Input Matrix message
- * \return		Eigen matrix
+ * \return		\link matrix_type Eigen matrix \endlink
  */
 matrix_type MatrixMsgToEigen(const Matrix& m);
 
