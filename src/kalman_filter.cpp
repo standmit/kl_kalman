@@ -2,7 +2,7 @@
  * \file
  * \brief Kalman Filter
  * \author Andrey Stepanov
- * \version 0.2.0
+ * \version 0.3.0
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,15 @@ KalmanFilter::KalmanFilter():
 	P.setZero();
 }
 
+KalmanFilter::~KalmanFilter() {}
+
 void KalmanFilter::setState(const matrix_type& state, const matrix_type& covariance) {
 	X = state;
 	P = covariance;
+}
+
+matrix_type KalmanFilter::getState() const {
+	return X;
 }
 
 void KalmanFilter::getState(matrix_type& state, matrix_type& covariance) const {
@@ -40,7 +46,7 @@ void KalmanFilter::getState(matrix_type& state, matrix_type& covariance) const {
 	covariance = P;
 }
 
-matrix_type KalmanFilter::getF(const double dt) const {
+matrix_type KalmanFilter::getF(const double dt) {
 	matrix_type F(P.rows(), P.cols());
 	F.setZero();
 	for (composite_matrix::const_iterator comp = Fcomp.begin(); comp != Fcomp.end(); comp++)
@@ -52,8 +58,14 @@ void KalmanFilter::clearF() {
 	Fcomp.clear();
 }
 
-void KalmanFilter::addFcomp(const matrix_type& T, const power_type power) {
-	Fcomp.emplace_back(T, power);
+void KalmanFilter::addFcomp(const matrix_type& Fi, const power_type power) {
+	Fcomp.emplace_back(Fi, power);
+}
+
+void KalmanFilter::predict(const double dt) {
+	matrix_type F = getF(dt);
+	X = F * X;
+	P = F * P * F.transpose();
 }
 
 }

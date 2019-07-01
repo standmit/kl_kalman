@@ -2,7 +2,7 @@
  * \file
  * \brief ROS wrapper for Kalman Filter
  * \author Andrey Stepanov
- * \version 0.2.0
+ * \version 0.3.0
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,23 +23,20 @@
 
 namespace kl_kalman {
 
-KalmanFilterROS::KalmanFilterROS():
-		KalmanFilter(),
-		nh("~kalman_filter")
-{ }
-
 KalmanFilterROS::KalmanFilterROS(const std::string name):
 		KalmanFilter(),
-		nh("~" + name)
+		nh(name)
 { }
+
+KalmanFilterROS::~KalmanFilterROS() { }
 
 const std::string& KalmanFilterROS::getNamespace() const {
 	return nh.getNamespace();
 }
 
-void KalmanFilterROS::init() {
-	loadEigen("X", X);
-	loadEigen("P", P);
+void KalmanFilterROS::init(bool autostart) {
+	autostart = autostart && loadEigen("X", X);
+	autostart = autostart && loadEigen("P", P);
 	clearF();
 	XmlRpc::XmlRpcValue Farray;
 	if (nh.getParam("F", Farray)) {
@@ -50,9 +47,21 @@ void KalmanFilterROS::init() {
 			}
 		}
 		catch (XmlRpc::XmlRpcException &e) {
+			autostart = false;
 			ROS_ERROR("Can't load F matrix components: %s", e.getMessage().c_str());
 		}
 	}
+	prediction_timer = nh.createTimer(
+		ros::Duration(
+			ros::Rate(
+				nh.param("prediction_rate", 100.)
+			)
+		),
+		&KalmanFilterROS::prediction_timer_cb,
+		this,
+		false,		// oneshot
+		autostart	// autostart
+	);
 }
 
 bool KalmanFilterROS::loadEigen(const std::string& param_name, matrix_type& e) const {
@@ -67,6 +76,18 @@ bool KalmanFilterROS::loadEigen(const std::string& param_name, matrix_type& e) c
 
 matrix_type KalmanFilterROS::loadEigen(const XmlRpc::XmlRpcValue& x) {
 	return MatrixMsgToEigen(XmlRpcToMatrixMsg(x));
+}
+
+void KalmanFilterROS::prediction_timer_cb(const ros::TimerEvent& te) {
+	predict((te.current_expected - te.last_expected).toSec());
+}
+
+void KalmanFilterROS::start() {
+	prediction_timer.start();
+}
+
+void KalmanFilterROS::stop() {
+	prediction_timer.stop();
 }
 
 }

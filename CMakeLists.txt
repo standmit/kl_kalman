@@ -187,7 +187,6 @@ if (DOXYGEN_FOUND)
 		${DOXYGEN_EXECUTABLE}
 		doxygen/kl_kalman.Doxyfile
 		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-		COMMENT "Generating ${PROJECT_NAME} documentation..."
 	)
 endif() 
 

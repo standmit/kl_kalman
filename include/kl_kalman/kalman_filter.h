@@ -2,7 +2,7 @@
  * \file
  * \brief Kalman Filter
  * \author Andrey Stepanov
- * \version 0.2.1
+ * \version 0.3.0
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,8 @@ class KalmanFilter {
 		 */
 		KalmanFilter();
 
+		virtual ~KalmanFilter();
+
 		/**
 		 * \brief				Set current state of the object
 		 * \param state			State of the object
@@ -47,6 +49,11 @@ class KalmanFilter {
 
 		/**
 		 * \brief	Get current state of system
+		 */
+		matrix_type getState() const;
+
+		/**
+		 * \brief	Get current state of system and covariance
 		 */
 		void getState(matrix_type& state, matrix_type& covariance) const;
 
@@ -61,17 +68,26 @@ class KalmanFilter {
 		/**
 		 * \brief	Add component of F matrix and its power
 		 * \details
-		 * \f$ \sum_{i} {T_i (dt)^i} + T (dt)^{power} \f$
+		 * \f$ \sum_{i} {F_i (dt)^i} + F_{power} (dt)^{power} \f$
 		 */
-		void addFcomp(const matrix_type& T, const power_type power);
+		void addFcomp(const matrix_type& Fi, const power_type power);
 
 		/**
 		 * \brief	Build F matrix
 		 * \details
 		 * F matrix will be built from components in Fcomp list
-		 * \f$F = \sum \limits_{i} T_i (dt)^i\f$
+		 * \f$ F(dt) = \sum \limits_{i} F_i (dt)^i \f$
 		 */
-		matrix_type getF(const double dt) const;
+		virtual matrix_type getF(const double dt);
+
+		/**
+		 * \brief	Make prediction
+		 * \details
+		 * \f$ x_k = F_k x_{k-1} \f$
+		 *
+		 * \param dt	Time elapsed since past prediction
+		 */
+		void predict(const double dt);
 
 	protected:
 		matrix_type X; ///< Object's state vector

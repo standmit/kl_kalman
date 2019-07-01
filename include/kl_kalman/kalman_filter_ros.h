@@ -2,7 +2,7 @@
  * \file
  * \brief ROS wrapper for Kalman Filter
  * \author Andrey Stepanov
- * \version 0.2.1
+ * \version 0.3.0
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,15 +32,11 @@ namespace kl_kalman {
 class KalmanFilterROS: public KalmanFilter {
 	public:
 		/**
-		 * \brief Constructor with standard namespace 'kalman_filter'
-		 */
-		KalmanFilterROS();
-
-
-		/**
 		 * \param name Filter's name. Used as namespace in parameters list
 		 */
-		KalmanFilterROS(const std::string name);
+		KalmanFilterROS(const std::string name = "~kalman_filter");
+
+		virtual ~KalmanFilterROS();
 
 		/**
 		 * \brief Get namespace of Kalman Filter
@@ -50,11 +46,23 @@ class KalmanFilterROS: public KalmanFilter {
 
 		/**
 		 * \brief	Initialise KalmanFilter from parameters. Call it after ros::init
+		 *
+		 * \param autostart		Start prediction and measurements after initialization
 		 */
-		void init();
+		void init(bool autostart = true);
+
+		/**
+		 * \brief	Start estimation
+		 */
+		void start();
+
+		/**
+		 * \brief	Stop estimation
+		 */
+		void stop();
 
 	protected:
-		const ros::NodeHandle nh; ///< NodeHandle for receiving parameters and publish/subscribe
+		ros::NodeHandle nh; ///< \link ros::NodeHandle NodeHandle \endlink for receiving parameters and publish/subscribe
 
 		/**
 		 * \brief 					Load Matrix from ParameterServer
@@ -70,6 +78,18 @@ class KalmanFilterROS: public KalmanFilter {
 		 * \return		\link matrix_type Eigen matrix \endlink
 		 */
 		static matrix_type loadEigen(const XmlRpc::XmlRpcValue& x);
+
+		/**
+		 * \brief	Callback to make prediction by timer
+		 *
+		 * \param te	A TimerEvent record contains desired timestamp
+		 */
+		void prediction_timer_cb(const ros::TimerEvent& te);
+
+	private:
+		ros::Timer prediction_timer; ///< Timer for calling predict
+
+		const std::string ns; ///< ROS namespace of instance
 };
 
 }

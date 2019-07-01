@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>kl_kalman</name>
-  <version>0.0.1</version>
+  <version>0.3.0</version>
   <description>Kalman Filter</description>
 
-  <maintainer email="standmit@yandex.ru">Andrey Stepanov</maintainer>
+  <maintainer email="standmit@zabstrannik.ru">Andrey Stepanov</maintainer>
 
   <license>Apache License 2.0</license>
 
-  <author email="standmit@yandex.ru">Andrey Stepanov</author>
+  <author email="standmit@zabstrannik.ru">Andrey Stepanov</author>
 
   <!-- The *depend tags are used to specify dependencies -->
   <!-- Dependencies can be catkin packages or system dependencies -->
