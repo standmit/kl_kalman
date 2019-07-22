@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>kl_kalman</name>
-  <version>0.3.0</version>
+  <version>0.4.0</version>
   <description>Kalman Filter</description>
 
   <maintainer email="standmit@zabstrannik.ru">Andrey Stepanov</maintainer>
@@ -36,6 +36,8 @@
   <exec_depend>roscpp</exec_depend>
   <depend>xmlrpcpp</depend>
   <depend>message_runtime</depend>
+  <depend>ros_type_introspection</depend>
+  <depend>topic_tools</depend>
 
   <export>
   </export>

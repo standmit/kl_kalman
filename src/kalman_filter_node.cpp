@@ -2,7 +2,7 @@
  * \file
  * \brief Kalman Filter ROS node
  * \author Andrey Stepanov
- * \version 0.3.0
+ * \version 0.4.0
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +17,37 @@
  * limitations under the License.
  */
 
-#include "kl_kalman/kalman_filter_ros.h"
 #include <ros/ros.h>
+#include <kl_kalman/kalman_filter_ros.h>
 
-kl_kalman::KalmanFilterROS* kalman_filter;
+class TestKalmanFilterROS : public kl_kalman::KalmanFilterROS {
+	public:
+		TestKalmanFilterROS();
+		void topic_callback(const kl_kalman::matrix_type vector);
+		void test_subscribe(const std::string& topic_name, const kl_kalman::interest_type& interest);
+};
 
-void publish_timer_cb(const ros::TimerEvent& te) {
-	kl_kalman::matrix_type X = kalman_filter->getState();
-	ROS_INFO("X = %1.1f; Vx = %1.1f", X(0,0), X(1,0));
+TestKalmanFilterROS::TestKalmanFilterROS():
+	kl_kalman::KalmanFilterROS()
+{}
+
+void TestKalmanFilterROS::topic_callback(const kl_kalman::matrix_type vector) {
+	ROS_INFO_STREAM("Vector from topic:" << std::endl << vector << std::endl);
+}
+
+void TestKalmanFilterROS::test_subscribe(const std::string& topic_name, const kl_kalman::interest_type& interest) {
+	subscribe(topic_name, 1, interest, &TestKalmanFilterROS::topic_callback, this);
 }
 
 int main(int argc, char **argv) {
 	ros::init(argc, argv, "kalman_filter");
 	ros::NodeHandle nh("~");
 
-	kalman_filter = new kl_kalman::KalmanFilterROS();
-	kalman_filter->init();
+	TestKalmanFilterROS kalman_filter;
 
-	ros::Timer publish_timer = nh.createTimer(ros::Duration(1.), &publish_timer_cb);
+	kalman_filter.test_subscribe("test_topic", {1,2});
 
 	ros::spin();
-
-	delete kalman_filter;
 
 	return 0;
 }

@@ -2,7 +2,7 @@
  * \file
  * \brief ROS wrapper for Kalman Filter
  * \author Andrey Stepanov
- * \version 0.3.0
+ * \version 0.4.0
  * \copyright Copyright (c) 2019 Andrey Stepanov \n
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,6 +88,38 @@ void KalmanFilterROS::start() {
 
 void KalmanFilterROS::stop() {
 	prediction_timer.stop();
+}
+
+matrix_type KalmanFilterROS::parse_msg(const topic_tools::ShapeShifter::ConstPtr& msg, const std::string& topic_name, const interest_type& interest) {
+	msg_parser.registerMessageDefinition(
+		topic_name,
+		RosIntrospection::ROSType(msg->getDataType()),
+		msg->getMessageDefinition()
+	);
+	std::vector<uint8_t> buffer(msg->size());
+	ros::serialization::OStream stream(buffer.data(), buffer.size());
+	msg->write(stream);
+
+	RosIntrospection::FlatMessage flat_container;
+	msg_parser.deserializeIntoFlatContainer(
+		topic_name,
+		absl::Span<uint8_t>(buffer),
+		&flat_container,
+		100
+	);
+
+	RosIntrospection::RenamedValues renamed_value;
+	msg_parser.applyNameTransform(
+		topic_name,
+		flat_container,
+		&renamed_value
+	);
+
+	matrix_type result(interest.size(), 1);
+	for (interest_type::size_type i = 0; i < interest.size(); i++)
+		result(i,0) = renamed_value[interest[i]].second.convert<double>();
+
+	return result;
 }
 
 }

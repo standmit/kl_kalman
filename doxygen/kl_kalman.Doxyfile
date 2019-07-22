@@ -12,4 +12,6 @@ SOURCE_BROWSER = YES
 EXTRACT_PRIVATE = YES
 TAGFILES = 	doxygen/XmlRpc.tag \
 			doxygen/roscpp.tag \
-			doxygen/eigen.tag
+			doxygen/eigen.tag \
+			doxygen/topic_tools.tag \
+			doxygen/ros_type_introspection.tag

@@ -11,6 +11,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   xmlrpcpp
   message_generation
+  ros_type_introspection
+  topic_tools
 )
 
 ## System dependencies are found with CMake's conventions
