@@ -162,19 +162,27 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
-add_library(kalman_filter src/kalman_filter.cpp)
+set(KALMAN_FILTER ${PROJECT_NAME})
+add_library(${KALMAN_FILTER} src/kalman_filter.cpp)
+set_target_properties(${KALMAN_FILTER} PROPERTIES OUTPUT_NAME kalman_filter PREFIX "")
 
-add_library(matrix_msg_conversions src/matrix_msg_conversions.cpp)
-add_dependencies(matrix_msg_conversions ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(matrix_msg_conversions ${catkin_LIBRARIES})
+set(MATRIX_MSG_CONVERSIONS ${PROJECT_NAME}_matrix_msg_conversions)
+add_library(${MATRIX_MSG_CONVERSIONS} src/matrix_msg_conversions.cpp)
+add_dependencies(${MATRIX_MSG_CONVERSIONS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(${MATRIX_MSG_CONVERSIONS} ${catkin_LIBRARIES})
+set_target_properties(${MATRIX_MSG_CONVERSIONS} PROPERTIES OUTPUT_NAME matrix_msg_conversions PREFIX "")
 
-add_library(kalman_filter_ros src/kalman_filter_ros.cpp)
-add_dependencies(kalman_filter_ros kalman_filter matrix_msg_conversions ${catkin_EXPORTED_TARGETS})
-target_link_libraries(kalman_filter_ros kalman_filter matrix_msg_conversions ${catkin_LIBRARIES})
+set(ROS_WRAPPER ${KALMAN_FILTER}_ros)
+add_library(${ROS_WRAPPER} src/kalman_filter_ros.cpp)
+add_dependencies(${ROS_WRAPPER} ${KALMAN_FILTER} ${MATRIX_MSG_CONVERSIONS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(${ROS_WRAPPER} ${KALMAN_FILTER} ${MATRIX_MSG_CONVERSIONS} ${catkin_LIBRARIES})
+set_target_properties(${ROS_WRAPPER} PROPERTIES OUTPUT_NAME kalman_filter_ros PREFIX "")
 
-add_executable(kalman_filter_node src/kalman_filter_node.cpp)
-add_dependencies(kalman_filter_node matrix_msg_conversions kalman_filter_ros ${catkin_EXPORTED_TARGETS})
-target_link_libraries(kalman_filter_node matrix_msg_conversions kalman_filter_ros ${catkin_LIBRARIES})
+set(NODE ${KALMAN_FILTER}_node)
+add_executable(${NODE} src/kalman_filter_node.cpp)
+add_dependencies(${NODE} ${MATRIX_MSG_CONVERSIONS} ${ROS_WRAPPER} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(${NODE} ${MATRIX_MSG_CONVERSIONS} ${ROS_WRAPPER} ${catkin_LIBRARIES})
+set_target_properties(${NODE} PROPERTIES OUTPUT_NAME kalman_filter_node PREFIX "")
 
 ###################
 ## Documentation ##
